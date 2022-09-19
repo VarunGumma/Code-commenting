@@ -3,7 +3,6 @@ import argparse
 import torch
 from UtilClasses import Tester
 from DataWorks import BatchQueue
-from torch.cuda import is_available
 from Models import DeepComEncoder, AttentionDecoder
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 

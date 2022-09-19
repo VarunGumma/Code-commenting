@@ -1,6 +1,5 @@
 import config
 import torch
-from time import time
 from tqdm import tqdm
 from torch.cuda import is_available
 from nltk.translate.meteor_score import meteor_score
@@ -27,7 +26,7 @@ class Trainer:
                    
     def __train_step(self, batch):
         self.optimizer.zero_grad()
-        total_loss, coverage, context_vector = 0, None, None
+        coverage, context_vector = 0, None, None
         hidden, state = self.encoder(batch.code, batch.ast)
         # initially feed in batch_sz tensor of start tokens <S>
         # for us start token is always first word in the vocab
@@ -193,15 +192,18 @@ class Tester:
         self.__retrieve_checkpoint()
         temp_batchqueue = self.batchqueue.batcher(self.batch_sz)
         self.nl_list = self.batchqueue.nl_list
-            
-        for batch in tqdm(temp_batchqueue):
-            target_comment = batch.nl[:, 1:]
-            comment_batch = self.__test_step(batch)
-            out = self.__get_result(comment_batch.detach().cpu().numpy(), 
-                                    target_comment.detach().cpu().numpy(), 
-                                    batch.code_oovs,
-                                    print_idx=10)
-            print(out, flush=True)
+        self.encoder.eval()
+        self.decoder.eval()
+
+        with torch.no_grad():
+            for batch in tqdm(temp_batchqueue):
+                target_comment = batch.nl[:, 1:]
+                comment_batch = self.__test_step(batch)
+                out = self.__get_result(comment_batch.detach().cpu().numpy(), 
+                                        target_comment.detach().cpu().numpy(), 
+                                        batch.code_oovs,
+                                        print_idx=10)
+                print(out, flush=True)
 
 
     def __retrieve_checkpoint(self):

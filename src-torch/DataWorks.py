@@ -2,7 +2,6 @@ import config
 import random
 import torch
 from torch.cuda import is_available
-from torch.nn.utils.rnn import pad_packed_sequence
 device = torch.device("cuda" if is_available() else "cpu")
 
 
