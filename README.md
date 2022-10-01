@@ -1,5 +1,5 @@
 # Code-commenting
-- Design project on Code Comment Generation
+- Undergraduate Thesis on Code Comment Generation done under the guidance of [Prof. N. L. Bhanu Murthy](https://www.bits-pilani.ac.in/hyderabad/bhanumurthy/Profile)
 
 # Dataset
 - We use the dataset of the [DeepCom code](https://github.com/xing-hu/EMSE-DeepCom) for our training. We have trained mostly on Google Colaboratory. Recommend trying for the university's HPC (if not too busy) or GCloud credits (if **ANY** of your cards can get through without a refund).
